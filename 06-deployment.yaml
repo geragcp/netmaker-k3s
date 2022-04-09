@@ -1,0 +1,195 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netmaker
+  namespace: netmaker
+  labels:
+    app: netmaker
+spec:
+  selector:
+    matchLabels:
+      app: netmaker
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: netmaker
+    spec:
+      containers:
+
+
+      - name: netmaker-backend
+        image: gravitl/netmaker:v0.12.0
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8081
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+            - NET_ADMIN
+        env:
+        - name: RCE
+          value: "on"
+        - name: NODE_ID
+          value: "master1"
+        - name: DATABASE
+          value: "sqlite"
+        - name: MQ_HOST
+          value: "127.0.0.1"
+        - name: SERVER_API_CONN_STRING
+          value: "api.netmaker.NETMAKER_BASE_DOMAIN:443"
+        - name: SERVER_GRPC_CONN_STRING
+          value: "grpc.netmaker.NETMAKER_BASE_DOMAIN:443"
+        - name: COREDNS_ADDR
+          value: "127.0.0.1"
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: GRPC_SSL
+          value: "on"
+        - name: SERVER_HTTP_HOST
+          value: "api.netmaker.NETMAKER_BASE_DOMAIN"
+        - name: SERVER_GRPC_HOST
+          value: "grpc.netmaker.NETMAKER_BASE_DOMAIN"
+        - name: API_PORT
+          value: "8081"
+        - name: GRPC_PORT
+          value: "50051"
+        - name: CLIENT_MODE
+          value: "on"
+        - name: MASTER_KEY
+          value: "Unkn0wn!"
+        - name: PLATFORM
+          value: "Kubernetes"
+        - name: CORS_ALLOWED_ORIGIN
+          value: "*"
+        volumeMounts:
+        - name: nm-pvc-dnsconfig-backend
+          mountPath: /root/config/dnsconfig
+        - name: nm-pvc-sqldata
+          mountPath: /root/data
+
+
+      - args:
+        - -conf
+        - /root/dnsconfig/Corefile
+        image: coredns/coredns
+        imagePullPolicy: Always
+        name: netmaker-dns
+        ports:
+        - containerPort: 53
+          name: dns
+          protocol: UDP
+        - containerPort: 53
+          name: dns-tcp
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /root/dnsconfig
+          name: nm-pvc-dnsconfig-coredns
+          readOnly: true
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
+            drop:
+            - all
+
+
+      - name: netmaker-ui
+        image: gravitl/netmaker-ui:v0.12.0
+        ports:
+        - containerPort: 80
+        env:
+        - name: BACKEND_URL
+          value: "https://api.netmaker.NETMAKER_BASE_DOMAIN"
+
+
+      - name: netmaker-mq
+        image: eclipse-mosquitto:2.0.14
+        ports:
+        - containerPort: 1883
+        volumeMounts:
+          - name: netmaker-mq-configmap
+            mountPath: /mosquitto/config/mosquitto.conf
+            subPath: mosquitto.conf
+            readOnly: true
+
+
+      volumes:
+      - name: nm-pvc-dnsconfig-backend
+        persistentVolumeClaim:
+          claimName: nm-pvc-dnsconfig-backend
+      - name: nm-pvc-sqldata
+        persistentVolumeClaim:
+          claimName: nm-pvc-sqldata
+      - name: nm-pvc-dnsconfig-coredns
+        persistentVolumeClaim:
+          claimName: nm-pvc-dnsconfig-coredns
+      - name: netmaker-mq-configmap
+        configMap:
+          name: netmaker-mq-configmap
+
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: netmaker
+  labels:
+    app: netmaker
+  name: netmaker-api
+spec:
+  ports:
+  - port: 8081
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: netmaker
+  sessionAffinity: None
+  type: ClusterIP
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: netmaker
+  labels:
+    app: netmaker
+  name: netmaker-grpc
+spec:
+  ports:
+  - port: 50051
+    protocol: TCP
+    targetPort: 50051
+  selector:
+    app: netmaker
+  sessionAffinity: None
+  type: ClusterIP
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: netmaker
+  labels:
+    app: netmaker
+  name: netmaker-ui
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: netmaker
+  sessionAffinity: None
+  type: ClusterIP
