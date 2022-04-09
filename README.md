@@ -21,7 +21,8 @@ will create a namespace. If you change it here you have to change it everywhere.
 
 ### 02-pvc.yaml
 Before applying this you need to create two folders. One for dns data and one for the sqlite database. 
-Fopr example: mkdir -p /srv/netmaker/dns and chmod 777 /srv/netmaker/dns. Then add it where it says <PATH>.
+For example: mkdir -p /srv/netmaker/dns and chmod 777 /srv/netmaker/dns, mkdir -p /srv/netmaker/sqlite and chmod 777 /srv/netmaker/sqlite. 
+Then add it where it says <PATH>.
 But you can see that there are three pvc's. Well k3s loca-path provider does not support readWriteMany. Since the dns pvc is mounted to netmaker and coredns at the same time, the workaround is to simply make two pvc's to the same path on disk.
 
 ### 03-nodeports.yaml
