@@ -1,0 +1,114 @@
+#mkdir -p /data/volumes/pv1
+#chmod 777 /data/volumes/pv1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nm-pv-dnsconfig-backend
+  namespace: netmaker
+spec:
+  capacity:
+    storage: 128Mi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  local:
+    path: <PATH>
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - <HOSTNAME>
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nm-pvc-dnsconfig-backend
+  namespace: netmaker
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 128Mi
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nm-pv-dnsconfig-coredns
+  namespace: netmaker
+spec:
+  capacity:
+    storage: 128Mi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  local:
+    path: <PATH>
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - <HOSTNAME>
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nm-pvc-dnsconfig-coredns
+  namespace: netmaker
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 128Mi
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nm-pv-sqldata
+  namespace: netmaker
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  local:
+    path: <PATH>
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - <HOSTNAME>
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nm-pvc-sqldata
+  namespace: netmaker
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
