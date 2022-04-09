@@ -34,7 +34,7 @@ This just needs to be there. It's from the official docker netmaker config.
 
 ### 05-ingress.yaml (Using k3s traefik)
 You need three domains with let'sencrypt. The dashboard, api for the dashboard and grpc. Note here the special rgpc config. It's not http.
-Replace NETMAKER_BASE_DOMAIN with your domain name. Replace FFcert-provider> with your provider. 
+Replace NETMAKER_BASE_DOMAIN with your domain name. Replace cert-provider with your provider. 
   
 ### 06-deployment.yaml
 You need to replace NETMAKER_BASE_DOMAIN with your domain in all the spots. Don't forget the one under the ui container. 
