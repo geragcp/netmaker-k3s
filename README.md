@@ -27,7 +27,7 @@ But you can see that there are three pvc's. Well k3s local-path provider does no
 
 ### 03-nodeports.yaml
 These are nodeports for wireguard connections to the container. Every network needs it's own port. There is a comms (management) network that is automatically
-created for you on first start by netmaker. This file creates six nodeports. That means you can create five networks before you have to go in here and just add more (copy/paste). 
+created for you on first start by netmaker. It is used for mqtt and dns. This file creates six nodeports. That means you can create five networks before you have to go in here and just add more (copy/paste). 
 
 ### 04-mqtt-configmap.yaml
 This just needs to be there. It's from the official docker netmaker config. 
