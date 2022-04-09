@@ -14,7 +14,8 @@ The database is a sqlite file for simplicity. All the persistant volumes are map
 
 I am using traefik with let'sencrypt but this can be swapped out easily with your choice of ingress. 
 
-### 00 install wireguard on the host. aka. apt -y install wireguad. 
+### 00 install wireguard on the host. 
+aka. apt -y install wireguad. 
 
 ### 01-namespace.yaml
 will create a namespace. If you change it here you have to change it everywhere.
