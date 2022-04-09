@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: netmaker-31821
+  namespace: netmaker
+spec:
+  type: NodePort
+  selector:
+    app: netmaker
+  ports:
+    - port: 31821
+      targetPort: 31821
+      nodePort: 31821
+      protocol: UDP
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netmaker-31822
+  namespace: netmaker
+spec:
+  type: NodePort
+  selector:
+    app: netmaker
+  ports:
+    - port: 31822
+      targetPort: 31822
+      nodePort: 31822
+      protocol: UDP
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netmaker-31823
+  namespace: netmaker
+spec:
+  type: NodePort
+  selector:
+    app: netmaker
+  ports:
+    - port: 31823
+      targetPort: 31823
+      nodePort: 31823
+      protocol: UDP
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netmaker-31824
+  namespace: netmaker
+spec:
+  type: NodePort
+  selector:
+    app: netmaker
+  ports:
+    - port: 31824
+      targetPort: 31824
+      nodePort: 31824
+      protocol: UDP
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netmaker-31825
+  namespace: netmaker
+spec:
+  type: NodePort
+  selector:
+    app: netmaker
+  ports:
+    - port: 31825
+      targetPort: 31825
+      nodePort: 31825
+      protocol: UDP
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netmaker-31826
+  namespace: netmaker
+spec:
+  type: NodePort
+  selector:
+    app: netmaker
+  ports:
+    - port: 31826
+      targetPort: 31826
+      nodePort: 31826
+      protocol: UDP
