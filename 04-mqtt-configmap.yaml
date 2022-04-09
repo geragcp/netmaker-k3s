@@ -1,0 +1,12 @@
+#https://github.com/gravitl/netmaker/blob/master/docker/mosquitto.conf
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: netmaker-mq-configmap
+  namespace: netmaker
+data:
+  mosquitto.conf: |
+    persistence true
+    per_listener_settings true
+    listener 1883
+    allow_anonymous true
