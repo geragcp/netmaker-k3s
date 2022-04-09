@@ -22,8 +22,8 @@ will create a namespace. If you change it here you have to change it everywhere.
 ### 02-pvc.yaml
 Before applying this you need to create two folders. One for dns data and one for the sqlite database. 
 For example: mkdir -p /srv/netmaker/dns and chmod 777 /srv/netmaker/dns, mkdir -p /srv/netmaker/sqlite and chmod 777 /srv/netmaker/sqlite. 
-Then add it where it says <PATH>.
-But you can see that there are three pvc's. Well k3s loca-path provider does not support readWriteMany. Since the dns pvc is mounted to netmaker and coredns at the same time, the workaround is to simply make two pvc's to the same path on disk.
+Then add it where it says PATH.
+But you can see that there are three pvc's. Well k3s local-path provider does not support readWriteMany. Since the dns pvc is mounted to netmaker and coredns at the same time, the workaround is to simply make two pvc's to the same path on disk.
 
 ### 03-nodeports.yaml
 These are nodeports for wireguard connections to the container. Every network needs it's own port. There is a comms (management) network that is automatically
@@ -34,7 +34,7 @@ This just needs to be there. It's from the official docker netmaker config.
 
 ### 05-ingress.yaml (Using k3s traefik)
 You need three domains with let'sencrypt. The dashboard, api for the dashboard and grpc. Note here the special rgpc config. It's not http.
-Replace NETMAKER_BASE_DOMAIN with your domain name. Replace <cert-provider> with your provider. 
+Replace NETMAKER_BASE_DOMAIN with your domain name. Replace FFcert-provider> with your provider. 
   
 ### 06-deployment.yaml
 You need to replace NETMAKER_BASE_DOMAIN with your domain in all the spots. Don't forget the one under the ui container. 
