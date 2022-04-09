@@ -34,8 +34,6 @@ spec:
         env:
         - name: RCE
           value: "on"
-        - name: NODE_ID
-          value: "master1"
         - name: DATABASE
           value: "sqlite"
         - name: MQ_HOST
