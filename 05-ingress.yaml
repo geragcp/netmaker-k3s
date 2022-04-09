@@ -14,7 +14,7 @@ spec:
     - name: netmaker-api
       port: 8081
   tls:
-    certResolver: cloudflare-prod
+    certResolver: <cert-provider>
 
 ---
 # Disable auto-detection
@@ -47,7 +47,7 @@ spec:
     middlewares:
     - name: autodetect
   tls:
-    certResolver: cloudflare-prod
+    certResolver: <cert-provider>
 
 
 
@@ -68,5 +68,5 @@ spec:
     - name: netmaker-ui
       port: 80
   tls:
-    certResolver: cloudflare-prod
+    certResolver: <cert-provider>
 
