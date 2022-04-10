@@ -25,6 +25,7 @@ Before applying this you need to create two folders. One for dns data and one fo
 For example: mkdir -p /srv/netmaker/dns and chmod 777 /srv/netmaker/dns, mkdir -p /srv/netmaker/sqlite and chmod 777 /srv/netmaker/sqlite. 
 Then add it where it says PATH.
 But you can see that there are three pvc's. Well k3s local-path provider does not support readWriteMany. Since the dns pvc is mounted to netmaker and coredns at the same time, the workaround is to simply make two pvc's to the same path on disk.
+Also replace HOSTNAME with the name of the vm/host you are running on. 
 
 ### 03-nodeports.yaml
 These are nodeports for wireguard connections to the container. Every network needs it's own port. There is a comms (management) network that is automatically
