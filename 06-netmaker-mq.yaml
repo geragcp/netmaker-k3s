@@ -1,0 +1,80 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netmaker-mq
+  namespace: netmaker
+  labels:
+    app: netmaker-mq
+spec:
+  selector:
+    matchLabels:
+      app: netmaker-mq
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: netmaker-mq
+    spec:
+      containers:
+
+      - name: netmaker-mq
+        image: eclipse-mosquitto:2.0.11-openssl
+        ports:
+        - containerPort: 1883
+          name: mqtt-local
+          protocol: TCP
+        - containerPort: 8883
+          name: mqtt-broker
+          protocol: TCP
+        volumeMounts:
+          - name: netmaker-mq-configmap
+            mountPath: /mosquitto/config/mosquitto.conf
+            subPath: mosquitto.conf
+            readOnly: true
+          - name: nm-pvc-mq-certs-mq
+            mountPath: /mosquitto/certs
+            readOnly: true
+          - name: nm-pvc-mq-log
+            mountPath: /mosquitto/log
+          - name: nm-pvc-mq-data
+            mountPath: /mosquitto/data
+
+      volumes:
+      - name: netmaker-mq-configmap
+        configMap:
+          name: netmaker-mq-configmap
+      - name: nm-pvc-mq-certs-mq
+        persistentVolumeClaim:
+          claimName: nm-pvc-mq-certs-mq
+      - name: nm-pvc-mq-log
+        persistentVolumeClaim:
+          claimName: nm-pvc-mq-log
+      - name: nm-pvc-mq-data
+        persistentVolumeClaim:
+          claimName: nm-pvc-mq-data
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: netmaker
+  labels:
+    app: netmaker-mq
+  name: netmaker-mq
+spec:
+  ports:
+  - port: 8883
+    name: mqtt-broker
+    protocol: TCP
+    targetPort: 8883
+  - port: 1883
+    name: mqtt-local
+    protocol: TCP
+    targetPort: 1883
+  selector:
+    app: netmaker-mq
+  sessionAffinity: None
+  type: ClusterIP
