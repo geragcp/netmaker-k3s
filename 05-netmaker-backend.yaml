@@ -17,6 +17,7 @@ spec:
     metadata:
       labels:
         app: netmaker-backend
+        networking/allow-internet-access: "true"
     spec:
       containers:
 
