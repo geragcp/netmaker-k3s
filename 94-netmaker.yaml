@@ -1,0 +1,106 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: netmaker-backend
+  namespace: netmaker
+spec:
+  podSelector:
+    matchLabels:
+      app: netmaker-backend
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: traefik
+      ports:
+        - port: 8081
+
+    - from:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+      ports:
+        - protocol: UDP
+          port: 31821
+          endPort: 31829
+
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+      ports:
+        - protocol: UDP
+          port: 31821
+          endPort: 31829
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              networking/namespace: netmaker
+          podSelector:
+            matchLabels:
+              app: netmaker-mq
+      ports:
+        - port: 1883
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: netmaker-mq
+  namespace: netmaker
+spec:
+  podSelector:
+    matchLabels:
+      app: netmaker-mq
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: traefik
+      ports:
+        - port: 8883
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              networking/namespace: netmaker
+          podSelector:
+            matchLabels:
+              app: netmaker-backend
+      ports:
+        - port: 1883
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: netmaker-ui
+  namespace: netmaker
+spec:
+  podSelector:
+    matchLabels:
+      app: netmaker-ui
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: traefik
+      ports:
+        - port: 80
