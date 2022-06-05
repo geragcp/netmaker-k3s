@@ -36,13 +36,13 @@ These are nodeports for wireguard connections to the container. Every network ne
 This just needs to be there. It's from the official docker netmaker config. 
 
 ### 05-netmaker-backend.yaml
-You need to replace NETMAKER_BASE_DOMAIN with your domain in all the spots. 
+You need to replace BASE_DOMAIN with your domain in all the spots. 
 
 ### 06-netmaker-mq.yaml
-You need to replace NETMAKER_BASE_DOMAIN with your domain in all the spots.
+You need to replace BASE_DOMAIN with your domain in all the spots.
 
 ### 07-netmaker-ui.yaml
-You need to replace NETMAKER_BASE_DOMAIN with your domain in all the spots. 
+You need to replace BASE_DOMAIN with your domain in all the spots. 
 
 ### 08-ingress.yaml (Using k3s traefik)
 You need three domains with let'sencrypt. The dashboard, api and the broker. Note here the special broker config. It's not http.
@@ -55,7 +55,7 @@ Optional step 1: It puts a default deny into the network namespace and only allo
 Optional step 2: Allows for internet acces but not LAN access
 
 ### 94-netmaker.yaml
-Optional step 3: This policy allows the pods to communicate between each other. 
+Optional step 3: This policy allows the pods to communicate between each other and traefik. 
 
 ### Tip
 Once it is running, Coredns created the corefile in the path you specified in 02-pvc. Go there and edit the default forwarder if you like. 
