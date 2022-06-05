@@ -1,4 +1,4 @@
-# netmaker-k3s (single pod)
+# netmaker-k3s
 Run netmaker on a k3s server with defaults.
 
 I was looking at netmaker the other day and thought: wouldn't it be nice if it could be deployed more easily to kubernetes? 
