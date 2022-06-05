@@ -5,8 +5,13 @@ Run netmaker on a k3s server with defaults.
 Netmaker decided in version 0.14.2 to change the broker(mqtt) communication from port 8883 to 443. This is a fantastic move
 since now all communication flows over port 443. The dashboard, api and broker. You notice in the ingress manifest that this
 is implemented using a tcp ingress route. Well done, I would say!!!
+
+![img-description](traefik-http.jpg)
+![img-description](traefik-tcp.jpg)
+
   
-Wouldn't it be nice if it could be deployed more easily to kubernetes? 
+  
+Wouldn't it be nice this could be deployed more easily to kubernetes? 
 The project offers a helm chart that adds high availability if you are in need of such a thing. I was not. I just wanted to test it in a vm/pi/etc. 
 To adapt this to run in a cluster, simply modify the pvc configs to use nfs, longhorn, rook, etc. 
 
