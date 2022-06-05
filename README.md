@@ -1,15 +1,20 @@
 # netmaker-k3s
 Run netmaker on a k3s server with defaults.
 
-I was looking at netmaker the other day and thought: wouldn't it be nice if it could be deployed more easily to kubernetes? 
-The project offers a helm chart that adds high availability if you are in need of such a thing. I was not. I just wanted to test it in a vm. 
+## Update
+Netmaker decided in version 0.14.2 to change the broker(mqtt) communication from port 8883 to 443. This is a fantastic move
+since now all communication flows over port 443. The dashboard, api and broker. You notice in the ingress manifest that this
+is implemented using a tcp ingress route. Well done, I would say!!!
+  
+Wouldn't it be nice if it could be deployed more easily to kubernetes? 
+The project offers a helm chart that adds high availability if you are in need of such a thing. I was not. I just wanted to test it in a vm/pi/etc. 
 To adapt this to run in a cluster, simply modify the pvc configs to use nfs, longhorn, rook, etc. 
 
-This project contains a deployment that puts the netmaker backend, ui, mqtt and coredns into a few simple pods. The pods are isolated using network policies. 
+This project contains a deployment that puts the netmaker backend, ui, mqtt and coredns into a few simple pods. The pods are then isolated using network policies. 
 The communication between the services within the same pod is facilitated via the loopback interface. 
 The database is a sqlite file for simplicity. All the persistant volumes are mapped to a local folder for easy access just like a docker volume mount.
 
-I am using traefik with let'sencrypt here but this can be swapped out easily with your choice of ingress. 
+I am using traefik with let'sencrypt here but this can be swapped out to your choice of ingress. 
 
 ### 01-namespace.yaml
 will create a namespace. If you change the name here you have to change it everywhere.
