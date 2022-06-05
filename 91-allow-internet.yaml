@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-internet-egress
+  namespace: netmaker
+spec:
+  podSelector:
+    matchLabels:
+      networking/allow-internet-access: "true"
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except:
+          - 10.0.0.0/8
+          - 192.168.0.0/16
+          - 172.16.0.0/20
+  ingress: []
+  policyTypes:
+  - Egress
+  - Ingress
