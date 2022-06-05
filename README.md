@@ -3,12 +3,13 @@ Run netmaker on a k3s server with defaults.
 
 I was looking at netmaker the other day and thought: wouldn't it be nice if it could be deployed more easily to kubernetes? 
 The project offers a helm chart that adds high availability if you are in need of such a thing. I was not. I just wanted to test it in a vm. 
+To adapt this to run in a cluster, simply modify the pvc configs to use nfs, longhorn, rook, etc. 
 
 This project contains a deployment that puts the netmaker backend, ui, mqtt and coredns into a few simple pods. The pods are isolated using network policies. 
-The communication between the services within the same pod is then facilitated via the loopback interface. There is of course a drawback in security but at least netmaker is easy to run this way.
+The communication between the services within the same pod is facilitated via the loopback interface. 
 The database is a sqlite file for simplicity. All the persistant volumes are mapped to a local folder for easy access just like a docker volume mount.
 
-I am using traefik with let'sencrypt but this can be swapped out easily with your choice of ingress. 
+I am using traefik with let'sencrypt here but this can be swapped out easily with your choice of ingress. 
 
 ### 01-namespace.yaml
 will create a namespace. If you change the name here you have to change it everywhere.
