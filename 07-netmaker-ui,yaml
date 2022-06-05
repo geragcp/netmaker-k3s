@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netmaker-ui
+  namespace: netmaker
+  labels:
+    app: netmaker-ui
+spec:
+  selector:
+    matchLabels:
+      app: netmaker-ui
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: netmaker-ui
+    spec:
+      containers:
+
+      - name: netmaker-ui
+        image: gravitl/netmaker-ui:v0.14.2
+        ports:
+        - containerPort: 80
+        env:
+        - name: BACKEND_URL
+          value: "https://api.BASE_DOMAIN"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: netmaker
+  labels:
+    app: netmaker-ui
+  name: netmaker-ui
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: netmaker-ui
+  sessionAffinity: None
+  type: ClusterIP
