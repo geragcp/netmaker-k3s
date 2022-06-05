@@ -1,5 +1,11 @@
-#mkdir -p /data/volumes/pv1
-#chmod 777 /data/volumes/pv1
+
+#mkdir -p /srv/netmaker/nm-dnsconfig-pvc
+#mkdir -p /srv/netmaker/nm-sqldata-pvc
+#mkdir -p /srv/netmaker/nm-mq-certs
+#mkdir -p /srv/netmaker/nm-mq-log
+#mkdir -p /srv/netmaker/nm-mq-data
+#chmod 777 /srv/netmaker/*
+
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -14,7 +20,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-path
   local:
-    path: <PATH>
+    path: /srv/netmaker/nm-dnsconfig-pvc
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -22,7 +28,7 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - <HOSTNAME>
+          - HOSTNAME
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -36,6 +42,7 @@ spec:
   resources:
     requests:
       storage: 128Mi
+  volumeName: nm-pv-dnsconfig-backend
 
 
 ---
@@ -52,7 +59,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-path
   local:
-    path: <PATH>
+    path: /srv/netmaker/nm-dnsconfig-pvc
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -60,7 +67,7 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - <HOSTNAME>
+          - HOSTNAME
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -74,6 +81,7 @@ spec:
   resources:
     requests:
       storage: 128Mi
+  volumeName: nm-pv-dnsconfig-coredns
 
 
 ---
@@ -90,7 +98,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-path
   local:
-    path: <PATH>
+    path: /srv/netmaker/nm-sqldata-pvc
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -98,7 +106,7 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - <HOSTNAME>
+          - HOSTNAME
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -112,3 +120,159 @@ spec:
   resources:
     requests:
       storage: 1Gi
+  volumeName: nm-pv-sqldata
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nm-pv-mq-certs-mq
+  namespace: netmaker
+spec:
+  capacity:
+    storage: 128Mi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  local:
+    path: /srv/netmaker/nm-mq-certs
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - HOSTNAME
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nm-pvc-mq-certs-mq
+  namespace: netmaker
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 128Mi
+  volumeName: nm-pv-mq-certs-mq
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nm-pv-mq-certs-nm
+  namespace: netmaker
+spec:
+  capacity:
+    storage: 128Mi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  local:
+    path: /srv/netmaker/nm-mq-certs
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - HOSTNAME
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nm-pvc-mq-certs-nm
+  namespace: netmaker
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 128Mi
+  volumeName: nm-pv-mq-certs-nm
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nm-pv-mq-log
+  namespace: netmaker
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  local:
+    path: /srv/netmaker/nm-mq-log
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - HOSTNAME
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nm-pvc-mq-log
+  namespace: netmaker
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: nm-pv-mq-log
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nm-pv-mq-data
+  namespace: netmaker
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  local:
+    path: /srv/netmaker/nm-mq-data
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - HOSTNAME
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nm-pvc-mq-data
+  namespace: netmaker
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: nm-pv-mq-data
