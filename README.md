@@ -46,7 +46,9 @@ You need to replace BASE_DOMAIN with your domain in all the spots.
 
 ### 08-ingress.yaml (Using k3s traefik)
 You need three domains with let'sencrypt. The dashboard, api and the broker. Note here the special broker config. It's not http.
-Replace NETMAKER_BASE_DOMAIN with your domain name. Replace cert-provider with your provider. 
+Replace BASE_DOMAIN with your domain name. Replace cert-provider with your provider. 
+  
+-- It's functional now. The following manifests implement network policy to improve security posture ---
   
 ### 90-network-deny.yaml
 Optional step 1: It puts a default deny into the network namespace and only allows dns.
