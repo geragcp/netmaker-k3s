@@ -22,7 +22,7 @@ spec:
       containers:
 
       - name: netmaker-backend
-        image: gravitl/netmaker:v0.14.6
+        image: gravitl/netmaker:v0.15.1
         imagePullPolicy: Always
         ports:
           - containerPort: 8081
